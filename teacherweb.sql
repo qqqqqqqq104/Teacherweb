@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 17/11/2019 21:02:26
+ Date: 01/12/2019 21:26:37
 */
 
 SET NAMES utf8mb4;
@@ -90,6 +90,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `name` varchar(20) NOT NULL,
   `passwd` varchar(20) NOT NULL,
+  `phonenum` int(11) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -97,8 +98,8 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES ('lisi', '234567');
-INSERT INTO `user` VALUES ('zhangsan', '123456');
+INSERT INTO `user` VALUES ('lisi', '234567', 123456789);
+INSERT INTO `user` VALUES ('zhangsan', '123456', 987654321);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
