@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 01/12/2019 21:26:37
+ Date: 08/12/2019 22:57:44
 */
 
 SET NAMES utf8mb4;
@@ -67,9 +67,12 @@ CREATE TABLE `record` (
   `rtime` date NOT NULL,
   `download` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`rno`),
-  KEY `username` (`username`),
-  KEY `mno` (`mno`),
-  KEY `eno` (`eno`),
+  KEY `FKC8466C51A2AE9F7F` (`username`),
+  KEY `FKC8466C51493697F3` (`mno`),
+  KEY `FKC8466C51E015EEAE` (`eno`),
+  CONSTRAINT `FKC8466C51493697F3` FOREIGN KEY (`mno`) REFERENCES `material` (`mno`),
+  CONSTRAINT `FKC8466C51A2AE9F7F` FOREIGN KEY (`username`) REFERENCES `user` (`name`),
+  CONSTRAINT `FKC8466C51E015EEAE` FOREIGN KEY (`eno`) REFERENCES `experience` (`eno`),
   CONSTRAINT `eno` FOREIGN KEY (`eno`) REFERENCES `experience` (`eno`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `mno` FOREIGN KEY (`mno`) REFERENCES `material` (`mno`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `user` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
