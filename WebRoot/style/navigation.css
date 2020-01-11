@@ -1,0 +1,43 @@
+nav{
+    float: left;
+    width:900px;
+    height:40px;
+    margin: 20px 0 0 180px;
+    padding: 0 ;
+}
+nav ul {
+    float:left;
+    margin: 0px;
+    padding: 0 0 0 0;
+    width: 920px;
+    list-style: none;
+}
+nav ul li {
+    display: inline;
+}
+nav ul li a {
+    float: left;
+    padding: 11px 20px; 
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: white;    
+    font-family: Î¢ÈíÑÅºÚ;
+    outline: none;
+}
+nav li a:hover {
+    color: black;
+}
+.a1{
+	color: black;  
+	font-size: 18px;  
+    font-family: Î¢ÈíÑÅºÚ;
+    outline: none;
+	text-decoration: none;
+}
+.a1{
+	font-size: 18px;  
+    font-family: Î¢ÈíÑÅºÚ;
+    outline: none;
+	text-decoration: none;
+}

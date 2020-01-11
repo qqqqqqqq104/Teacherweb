@@ -1,59 +1,58 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
-           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"> 
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:tx="http://www.springframework.org/schema/tx">
 
-<context:component-scan base-package="com.teacher"/>
-	
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		<property name="driverClass" value="org.gjt.mm.mysql.Driver"/>
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/teacherweb?useUnicode=true&amp;characterEncoding=UTF-8"/>
-		<property name="user" value="root"/>
-		<property name="password" value="123456"/>
-		<!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
-		<property name="initialPoolSize" value="1"/>
-		<!--连接池中保留的最小连接数。-->
-		<property name="minPoolSize" value="1"/>	
-		<!--连接池中保留的最大连接数。Default: 15 -->
-		<property name="maxPoolSize" value="300"/>
-		<!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
-		<property name="maxIdleTime" value="60"/>	
-		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
-		<property name="acquireIncrement" value="5"/>	
-		<!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
-		<property name="idleConnectionTestPeriod" value="60"/>
-	</bean>
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		 <property name="mappingResources">
-			    <list>
-			      <value>com/teacher/model/Experience.hbm.xml</value>
-			      <value>com/teacher/model/Material.hbm.xml</value>
-			      <value>com/teacher/model/User.hbm.xml</value>
-                  <value>com/teacher/model/Record.hbm.xml</value>
-			    </list>
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/test">
 		</property>
-		 <property name="hibernateProperties">
-			 <value>
-			      hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
-			      hibernate.hbm2ddl.auto=update
-			      hibernate.show_sql=false
-			      hibernate.format_sql=false
-			  </value>
-		 </property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
 	</bean>
-	<bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory"/>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/ssh/dto/Userbasic.hbm.xml</value>
+				<value>com/ssh/dto/Total.hbm.xml</value></list>
+	  </property>
+		</bean>
+		
+	<bean id="baseDAO" class="com.ssh.dao.BaseDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>	
+	<bean id="registerAction" class="com.ssh.action.RegisterAction">
+	    <property name="dao" ref="userBasicDao"></property>
+    </bean>
+	<bean id="loginAction" class="com.ssh.action.LoginAction">
+	    <property name="dao" ref="userBasicDao"></property>
+    </bean>
+    <bean id="personAction" class="com.ssh.action.PersonAction">
+	 <property name="dao" ref="personDao"></property>
+    </bean>
+    
+	<bean id="userBasicDao" class="com.ssh.idao.UserBasicDAOImp" parent="baseDAO"/>
+	<bean id="personDao" class="com.ssh.idao.PersonDAOImp" parent="baseDAO"/>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<!--使用基于注解方式配置事务 -->
-	<tx:annotation-driven transaction-manager="txManager"/> 
-	  
-</beans>
+	<tx:annotation-driven transaction-manager="transactionManager" /></beans>
